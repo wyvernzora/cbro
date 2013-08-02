@@ -98,12 +98,12 @@ namespace TaskRoute.Sandbox
                                 if (Path.Count > 1)
                                 {
                                     Int32 i = 0;
-                                    Task c = Path[i];
+                                    DataPoint c = Path[i];
                                     do
                                     {
                                         i++;
 
-                                        Task n = Path[i];
+                                        DataPoint n = Path[i];
 
                                         Int32 x0 = (Int32) (c.Location.X * width);
                                         Int32 y0 = (Int32) (c.Location.Y * height);
@@ -158,8 +158,11 @@ namespace TaskRoute.Sandbox
         {
             InitializeComponent();
 
-            Tasks = new List<Task>();
-            Path = new List<Task>();
+            SetStyle(ControlStyles.AllPaintingInWmPaint
+                        | ControlStyles.UserPaint | ControlStyles.DoubleBuffer, true);
+
+            Tasks = new List<DataPoint>();
+            Path = new List<DataPoint>();
 
             Cursor = Cursors.Cross;
 
@@ -171,11 +174,11 @@ namespace TaskRoute.Sandbox
         //public CbroAlgorithm Algorithm { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<Task> Path { get; set; }
+        public List<DataPoint> Path { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public List<Task> Tasks { get; set; }
+        public List<DataPoint> Tasks { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public Task SelectedTask { get; set; }
+        public DataPoint SelectedTask { get; set; }
 
 
         private Boolean AddMode { get; set; }
@@ -195,7 +198,7 @@ namespace TaskRoute.Sandbox
                     var pxScale = Math.Sqrt(Math.Pow(Width, 2) + Math.Pow(Height, 2));
 
                     // Check if clicked on a task or not
-                    Task select =
+                    DataPoint select =
                         Tasks.FirstOrDefault(
                             t => t.Location.DistanceTo(mousePoint) * pxScale < TaskPointRadius);
 
@@ -212,10 +215,10 @@ namespace TaskRoute.Sandbox
                         // Addition
                         if (ModifierKeys.HasFlag(Keys.Shift))
                         {
-                            var newTask = new Task()
+                            var newTask = new DataPoint()
                                 {
                                     Location = mousePoint,
-                                    Value = 1.0
+                                    Profit = 1.0
                                 };
                             Tasks.Add(newTask);
                         }

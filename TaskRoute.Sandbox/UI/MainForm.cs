@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using TaskRoute.Sandbox.Algorithm;
 
 namespace TaskRoute.Sandbox
 {
@@ -29,7 +30,7 @@ namespace TaskRoute.Sandbox
 
                 algorithm.Run();
 
-                visualizerSurface1.Path = algorithm.BestSolution;
+                visualizerSurface1.Path =  (from t in algorithm.BestSolution select t.Data).ToList();
                 visualizerSurface1.UpdateSurface();
             }
             catch (Exception x)

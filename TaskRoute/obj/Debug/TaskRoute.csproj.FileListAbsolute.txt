@@ -10,3 +10,9 @@ D:\Projects\CBRO\TaskRoute\bin\Debug\libWyvernzora.dll
 D:\Projects\CBRO\TaskRoute\obj\Debug\TaskRoute.csprojResolveAssemblyReference.cache
 D:\Projects\CBRO\TaskRoute\obj\Debug\TaskRoute.dll
 D:\Projects\CBRO\TaskRoute\obj\Debug\TaskRoute.pdb
+F:\Projects\cbro\TaskRoute\bin\Debug\TaskRoute.dll
+F:\Projects\cbro\TaskRoute\bin\Debug\TaskRoute.pdb
+F:\Projects\cbro\TaskRoute\bin\Debug\libWyvernzora.dll
+F:\Projects\cbro\TaskRoute\obj\Debug\TaskRoute.csprojResolveAssemblyReference.cache
+F:\Projects\cbro\TaskRoute\obj\Debug\TaskRoute.dll
+F:\Projects\cbro\TaskRoute\obj\Debug\TaskRoute.pdb

@@ -22,3 +22,16 @@ D:\Projects\CBRO\TaskRoute.Sandbox\bin\Debug\TaskRoute.pdb
 D:\Projects\CBRO\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.MainForm.resources
 D:\Projects\CBRO\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.AboutForm.resources
 D:\Projects\CBRO\TaskRoute.Sandbox\bin\Debug\SharpLua.dll
+F:\Projects\cbro\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.exe
+F:\Projects\cbro\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.pdb
+F:\Projects\cbro\TaskRoute.Sandbox\bin\Debug\TaskRoute.Sandbox.exe
+F:\Projects\cbro\TaskRoute.Sandbox\bin\Debug\TaskRoute.Sandbox.pdb
+F:\Projects\cbro\TaskRoute.Sandbox\bin\Debug\libWyvernzora.dll
+F:\Projects\cbro\TaskRoute.Sandbox\bin\Debug\SharpLua.dll
+F:\Projects\cbro\TaskRoute.Sandbox\bin\Debug\TaskRoute.dll
+F:\Projects\cbro\TaskRoute.Sandbox\bin\Debug\TaskRoute.pdb
+F:\Projects\cbro\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.csprojResolveAssemblyReference.cache
+F:\Projects\cbro\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.AboutForm.resources
+F:\Projects\cbro\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.MainForm.resources
+F:\Projects\cbro\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.Properties.Resources.resources
+F:\Projects\cbro\TaskRoute.Sandbox\obj\Debug\TaskRoute.Sandbox.csproj.GenerateResource.Cache

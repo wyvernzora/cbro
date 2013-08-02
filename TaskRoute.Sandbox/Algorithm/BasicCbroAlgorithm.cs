@@ -1,35 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace TaskRoute.Sandbox
+namespace TaskRoute.Sandbox.Algorithm
 {
-    public class BasicCbroAlgorithm : CbroOptimizer
+    public class BasicCbroAlgorithm : CbroOptimizerBase<DataPoint>
     {
-
-        public BasicCbroAlgorithm(IEnumerable<Task> tasks, int antCount)
+        public BasicCbroAlgorithm(IEnumerable<DataPoint> tasks, int antCount)
             : base(tasks, antCount)
         {
-        }
-
-        // Straight Distance
-        protected override double Distance(Task a, Task b)
-        {
-            Double d =  a.Location.DistanceTo(b.Location);
-            return d;
-        }
-
-        // No Constraints
-        protected override bool CanTransition(Ant ant, Task next)
-        {
-            return true;
-        }
-
-        // Value / Length
-        protected override double CalculateScore(Ant ant)
-        {
-            return ant.TourLength;
         }
 
         public void Run()
@@ -42,6 +19,21 @@ namespace TaskRoute.Sandbox
                     ResetAnts();
                 }
             }
+        }
+
+        protected override double Cost(Task<DataPoint> a, Task<DataPoint> b)
+        {
+            return a.Data.Location.DistanceTo(b.Data.Location);
+        }
+
+        protected override double Profit(Task<DataPoint> a)
+        {
+            return a.Data.Profit;
+        }
+
+        protected override bool CanTransition(Ant ant, Task<DataPoint> next)
+        {
+            return true;
         }
     }
 }

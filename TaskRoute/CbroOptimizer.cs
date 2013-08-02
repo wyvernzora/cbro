@@ -5,29 +5,43 @@ using System.Text;
 
 namespace TaskRoute
 {
-    public abstract class CbroOptimizer
+    /// <summary>
+    /// Base class for all customized CBRO optimizers.
+    /// </summary>
+    public abstract class CbroOptimizerBase<T>
     {
-
-        protected static Random rand = new Random();
+        //Random number generator
+        protected static readonly Random Rand = new Random();
 
         #region Nested Types
 
         /// <summary>
+        /// Task wrapper.
+        /// </summary>
+        /// <typeparam name="TData">Type of enclosed type data.</typeparam>
+        public class Task<TData>
+        {
+            public Int32 Id { get; set; }
+
+            public TData Data { get;set; }
+        }
+
+        /// <summary>
         /// Representation of ant in ACO
         /// </summary>
-        internal protected class Ant
+        protected class Ant
         {
             public Ant()
             {
                 CurrentTask = null;
-                Path = new List<Task>();
-                TourLength = 0.0;
+                Path = new List<Task<T>>();
+                TourCost = 0.0;
             }
 
             /// <summary>
             /// Current task
             /// </summary>
-            public Task CurrentTask { get; set; }
+            public Task<T> CurrentTask { get; set; }
             
             /// <summary>
             /// Array to quickly flag visited tasks
@@ -37,17 +51,17 @@ namespace TaskRoute
             /// <summary>
             /// Visited path up to the current task
             /// </summary>
-            public List<Task> Path { get; set; }
+            public List<Task<T>> Path { get; set; }
 
             /// <summary>
             /// Length of current tour up to the current task
             /// </summary>
-            public Double TourLength { get; set; }
+            public Double TourCost { get; set; }
 
             /// <summary>
             /// Value of the current tour up to the current task
             /// </summary>
-            public Double TourValue { get; set; }
+            public Double TourProfit { get; set; }
         }
 
         #endregion
@@ -57,12 +71,12 @@ namespace TaskRoute
         /// <summary>
         /// All tasks that need to be routed.
         /// </summary>
-        public Task[] Tasks { get; set; }
+        public Task<T>[] Tasks { get; set; }
 
         /// <summary>
         /// Sum of all task values.
         /// </summary>
-        public Double TotalValue { get; set; }
+        public Double PotentialProfit { get; set; }
         
         /// <summary>
         /// Alpha value, trail weight.
@@ -107,7 +121,7 @@ namespace TaskRoute
         /// <summary>
         /// Best solution up to the point.
         /// </summary>
-        public List<Task> BestSolution { get; protected set; }
+        public List<Task<T>> BestSolution { get; protected set; }
 
         /// <summary>
         /// Best score
@@ -129,12 +143,19 @@ namespace TaskRoute
         #region Abstract Methods
 
         /// <summary>
-        /// Abstract method that calculates distance between two tasks.
+        /// Abstract method that calculates cost of transition between two tasks.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns></returns>
-        protected abstract Double Distance(Task a, Task b);
+        protected abstract Double Cost(Task<T> a, Task<T> b);
+
+        /// <summary>
+        /// Abstract method that calculates the profit of visiting a specific task.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        protected abstract Double Profit(Task<T> a);
 
         /// <summary>
         /// Abstract predicate that determines whether the ant can transition to a given task.
@@ -142,23 +163,19 @@ namespace TaskRoute
         /// <param name="ant"></param>
         /// <param name="next"></param>
         /// <returns></returns>
-        protected abstract Boolean CanTransition(Ant ant, Task next);
-
-        /// <summary>
-        /// Calculates the score for a solution represented by a 
-        /// finished ant.
-        /// </summary>
-        /// <param name="ant"></param>
-        /// <returns></returns>
-        protected abstract Double CalculateScore(Ant ant);
+        protected abstract Boolean CanTransition(Ant ant, Task<T> next);
 
         #endregion
 
 
-        protected CbroOptimizer(IEnumerable<Task> tasks, Int32 antCount)
+        protected CbroOptimizerBase(IEnumerable<T> tasks, Int32 antCount)
         {
             // Copy tasks
-            Tasks = tasks.ToArray();
+            Tasks = (from t in tasks select new Task<T> {Data = t}).ToArray();
+            
+            // Initialize Task IDs
+            for (int i = 0; i < Tasks.Length; i++)
+                Tasks[i].Id = i;
 
             // Check parameters
             if (Tasks.Length < 3)
@@ -167,7 +184,7 @@ namespace TaskRoute
                 throw new ArgumentException("There is really no point optimizing with no ants.");
 
             // Calculate sum of all values
-            TotalValue = Tasks.Sum(t => t.Value);
+            PotentialProfit = Tasks.Sum(t => Profit(t));
 
             // Initialize Best Solution
             BestSolution = null;
@@ -184,11 +201,7 @@ namespace TaskRoute
             InitialPheromone = 1.0 / Tasks.Length;
 
             // Initialize the Algorithm
-
-            // Initialize Task IDs
-            for (int i = 0; i < Tasks.Length; i++)
-                Tasks[i].ID = i;
-
+            
             // Initialize Pheromone Map
             pheromone = new double[Tasks.Length, Tasks.Length];
             for (int i = 0; i < Tasks.Length; i++)
@@ -233,10 +246,10 @@ namespace TaskRoute
                     // ...if the transition is not null, the ant still has a way to go
 
                     // Process the next transition
-                    ant.VisitFlags[next.ID] = true;
+                    ant.VisitFlags[next.Id] = true;
                     ant.Path.Add(next);
-                    ant.TourLength += Distance(ant.CurrentTask, next);
-                    ant.TourValue += next.Value;
+                    ant.TourCost += Cost(ant.CurrentTask, next);
+                    ant.TourProfit += Profit(next);
 
                     // TODO Option for completing the cycle (?)
                     
@@ -259,11 +272,11 @@ namespace TaskRoute
             for (int i = 0; i < ants.Length; i++)
             {
                 // TODO Tour Score?
-                if (ants[i].TourLength < BestDistance)
+                if (ants[i].TourCost < BestDistance)
                 {
                     BestSolution = ants[i].Path.ToList(); // Make a copy!
-                    BestDistance = ants[i].TourLength;
-                    BestValue = ants[i].TourValue;
+                    BestDistance = ants[i].TourCost;
+                    BestValue = ants[i].TourProfit;
                 }
 
                 // TODO Initial Ant Distribution (??)
@@ -299,16 +312,16 @@ namespace TaskRoute
             {
                 for (int j = 0; j < ant.Path.Count - 1; j++)
                 {
-                    Task from = ant.Path[j];
-                    Task to = ant.Path[j + 1];
+                    var from = ant.Path[j];
+                    var to = ant.Path[j + 1];
 
                     // Pheromone Addition
-                    Double paddition = /*(ant.TourValue / TotalValue * Q)*/ Q / ant.TourLength * Rho;
+                    Double paddition = /*(ant.TourValue / TotalValue * Q)*/ Q / ant.TourCost * Rho;
 
-                    pheromone[@from.ID, to.ID] += paddition;
+                    pheromone[@from.Id, to.Id] += paddition;
 
                     // TODO Is the graph bidirectional?? Option to disable this (?)
-                    pheromone[to.ID, @from.ID] = pheromone[@from.ID, to.ID];
+                    pheromone[to.Id, @from.Id] = pheromone[@from.Id, to.Id];
                 }
             }
         }
@@ -318,10 +331,10 @@ namespace TaskRoute
         /// </summary>
         /// <param name="ant"></param>
         /// <returns></returns>
-        protected Task SelectTransition(Ant ant)
+        protected Task<T> SelectTransition(Ant ant)
         {
             // Get all possible transitions for the ant
-            Task[] transitions = GetPossibleTransitions(ant);
+            var transitions = GetPossibleTransitions(ant);
 
             // If there are no more transitions, return null
             if (transitions.Length == 0)
@@ -335,7 +348,7 @@ namespace TaskRoute
                 throw new Exception("Transition Possibility Formula denominator is 0.0, you have a bug (?).");
 
             Int32 i;
-            Double x = rand.NextDouble();
+            Double x = Rand.NextDouble();
 
             for (i = 0; i < transitions.Length; i++)
             {
@@ -353,10 +366,10 @@ namespace TaskRoute
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        protected Double AntProduct(Task from, Task to)
+        protected Double AntProduct(Task<T> from, Task<T> to)
         {
-            Double p = pheromone[from.ID, to.ID];
-            Double d = 1.0 / Distance(from, to);
+            Double p = pheromone[from.Id, to.Id];
+            Double d = 1.0 / Cost(from, to);
 
             return 
                 Math.Pow(p, Alpha) * Math.Pow(d, Beta);
@@ -367,10 +380,10 @@ namespace TaskRoute
         /// </summary>
         /// <param name="ant"></param>
         /// <returns></returns>
-        protected Task[] GetPossibleTransitions(Ant ant)
+        protected Task<T>[] GetPossibleTransitions(Ant ant)
         {
             return
-                (from t in Tasks where !ant.VisitFlags[t.ID] && CanTransition(ant, t) select t).ToArray();
+                (from t in Tasks where !ant.VisitFlags[t.Id] && CanTransition(ant, t) select t).ToArray();
         }
     }
 }
