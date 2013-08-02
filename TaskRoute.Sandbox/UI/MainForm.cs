@@ -6,7 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using libWyvernzora.Utilities;
 using TaskRoute.Sandbox.Algorithm;
+using System.Diagnostics;
 
 namespace TaskRoute.Sandbox
 {
@@ -21,12 +23,14 @@ namespace TaskRoute.Sandbox
         {
             try
             {
+                var algorithm = new BasicCbroAlgorithm(visualizerSurface1.Tasks, (int) nudColonySize.Value)
+                {
+                    Alpha = (double) nudAlpha.Value,
+                    Beta = (double) nudBeta.Value,
+                    Rho = (double) nudRho.Value,
+                    Q = (double) nudQ.Value
+                };
 
-                BasicCbroAlgorithm algorithm = new BasicCbroAlgorithm(visualizerSurface1.Tasks, (int) nudColonySize.Value);
-                algorithm.Alpha = (double) nudAlpha.Value;
-                algorithm.Beta = (double) nudBeta.Value;
-                algorithm.Rho = (double) nudRho.Value;
-                algorithm.Q = (double) nudQ.Value;
 
                 algorithm.Run();
 

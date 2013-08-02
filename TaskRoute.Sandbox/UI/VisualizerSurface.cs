@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
-namespace TaskRoute.Sandbox
+namespace TaskRoute.Sandbox.UI
 {
     public partial class VisualizerSurface : Control
     {
@@ -170,19 +168,14 @@ namespace TaskRoute.Sandbox
         }
 
         #region Properties
-
-        //public CbroAlgorithm Algorithm { get; set; }
-
+        
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<DataPoint> Path { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public List<DataPoint> Tasks { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public DataPoint SelectedTask { get; set; }
-
-
-        private Boolean AddMode { get; set; }
-
+        
         #endregion
 
         #region Event Handling

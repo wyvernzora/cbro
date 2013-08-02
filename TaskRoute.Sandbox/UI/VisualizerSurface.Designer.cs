@@ -1,4 +1,4 @@
-﻿namespace TaskRoute.Sandbox
+﻿namespace TaskRoute.Sandbox.UI
 {
     partial class VisualizerSurface
     {
