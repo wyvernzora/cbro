@@ -10,6 +10,20 @@ namespace TaskRoute.Sandbox.UI
 {
     public partial class VisualizerSurface : Control
     {
+        #region Events
+
+        public event EventHandler SelectionChanged
+        { add { selectionChanged += value; } remove { selectionChanged -= value; }}
+        private EventHandler selectionChanged;
+
+        private void RaiseSelectionChanged()
+        {
+            if (selectionChanged != null)
+                selectionChanged(this, new EventArgs());
+        }
+
+        #endregion
+
         #region Constants
 
         public const Int32 TaskPointRadius = 10;
@@ -199,11 +213,12 @@ namespace TaskRoute.Sandbox.UI
                     {
                         // Selection, handle
                         SelectedTask = select;
-
+                        RaiseSelectionChanged();
                     }
                     else
                     {
                         SelectedTask = null;
+                        RaiseSelectionChanged();
 
                         // Addition
                         if (ModifierKeys.HasFlag(Keys.Shift))

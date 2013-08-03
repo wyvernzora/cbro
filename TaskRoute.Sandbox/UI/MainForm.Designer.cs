@@ -36,7 +36,6 @@ namespace TaskRoute.Sandbox
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simulationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.run1TourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -59,7 +58,6 @@ namespace TaskRoute.Sandbox
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.visualizerSurface1 = new TaskRoute.Sandbox.UI.VisualizerSurface();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -68,6 +66,8 @@ namespace TaskRoute.Sandbox
             this.lblProfit = new System.Windows.Forms.Label();
             this.lblTime = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.visualizerSurface1 = new TaskRoute.Sandbox.UI.VisualizerSurface();
+            this.createRandomDatasetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -105,29 +105,23 @@ namespace TaskRoute.Sandbox
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.exitToolStripMenuItem.Text = "Exit...";
             // 
             // simulationToolStripMenuItem
             // 
             this.simulationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.run1TourToolStripMenuItem});
+            this.createRandomDatasetToolStripMenuItem});
             this.simulationToolStripMenuItem.Name = "simulationToolStripMenuItem";
             this.simulationToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
             this.simulationToolStripMenuItem.Text = "Simulation";
-            // 
-            // run1TourToolStripMenuItem
-            // 
-            this.run1TourToolStripMenuItem.Name = "run1TourToolStripMenuItem";
-            this.run1TourToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.run1TourToolStripMenuItem.Text = "Run 1 Tour...";
             // 
             // tabControl1
             // 
@@ -457,19 +451,6 @@ namespace TaskRoute.Sandbox
             this.tabPage2.Text = "Tasks";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // visualizerSurface1
-            // 
-            this.visualizerSurface1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.visualizerSurface1.BackColor = System.Drawing.Color.White;
-            this.visualizerSurface1.Cursor = System.Windows.Forms.Cursors.Cross;
-            this.visualizerSurface1.Location = new System.Drawing.Point(12, 27);
-            this.visualizerSurface1.Name = "visualizerSurface1";
-            this.visualizerSurface1.Size = new System.Drawing.Size(951, 642);
-            this.visualizerSurface1.TabIndex = 1;
-            this.visualizerSurface1.Text = "visualizerSurface1";
-            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.lblTime);
@@ -545,6 +526,26 @@ namespace TaskRoute.Sandbox
             this.label9.TabIndex = 21;
             this.label9.Text = "Time = ";
             // 
+            // visualizerSurface1
+            // 
+            this.visualizerSurface1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.visualizerSurface1.BackColor = System.Drawing.Color.White;
+            this.visualizerSurface1.Cursor = System.Windows.Forms.Cursors.Cross;
+            this.visualizerSurface1.Location = new System.Drawing.Point(12, 27);
+            this.visualizerSurface1.Name = "visualizerSurface1";
+            this.visualizerSurface1.Size = new System.Drawing.Size(951, 642);
+            this.visualizerSurface1.TabIndex = 1;
+            this.visualizerSurface1.Text = "visualizerSurface1";
+            // 
+            // createRandomDatasetToolStripMenuItem
+            // 
+            this.createRandomDatasetToolStripMenuItem.Name = "createRandomDatasetToolStripMenuItem";
+            this.createRandomDatasetToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.createRandomDatasetToolStripMenuItem.Text = "Create Random Dataset...";
+            this.createRandomDatasetToolStripMenuItem.Click += new System.EventHandler(this.createRandomDatasetToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -586,7 +587,6 @@ namespace TaskRoute.Sandbox
         private System.Windows.Forms.ToolStripMenuItem simulationToolStripMenuItem;
         private VisualizerSurface visualizerSurface1;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem run1TourToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -618,5 +618,6 @@ namespace TaskRoute.Sandbox
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ToolStripMenuItem createRandomDatasetToolStripMenuItem;
     }
 }

@@ -101,7 +101,7 @@ namespace TaskRoute
         /// <summary>
         /// Maximum number of ants per iteration.
         /// </summary>
-        public Double AntCount { get; set; }
+        public Int32 AntCount { get; set; }
 
         /// <summary>
         /// Initial pheromone deposit.
@@ -121,21 +121,21 @@ namespace TaskRoute
         /// Best solution up to the point.
         /// </summary>
         public List<Task<T>> BestSolution { get; protected set; }
-
-        /// <summary>
-        /// Best score
-        /// </summary>
-        public Double BestScore { get; protected set; }
-
+        
         /// <summary>
         /// Best tour distance up to the point.
         /// </summary>
-        public Double BestDistance { get; protected set; }
+        public Double BestCost { get; protected set; }
 
         /// <summary>
         /// Best tour value up to the point.
         /// </summary>
-        public Double BestValue { get; protected set; }
+        public Double BestProfit { get; protected set; }
+
+        /// <summary>
+        /// Delta from the previous run.
+        /// </summary>
+        public Double Delta { get; protected set; }
 
         #endregion
 
@@ -187,9 +187,9 @@ namespace TaskRoute
 
             // Initialize Best Solution
             BestSolution = null;
-            BestDistance = Double.MaxValue;
-            BestValue = 0;
-            BestScore = 0;
+            BestCost = Double.MaxValue;
+            BestProfit = 0;
+            Delta = Double.MaxValue;
 
             // Initialize default parameters (unweighted)
             Alpha = 1.0;
@@ -223,6 +223,7 @@ namespace TaskRoute
 
                 ants[i].VisitFlags[ctask] = true;
                 ants[i].Path.Add(Tasks[ctask]);
+                ants[i].TourProfit += Profit(Tasks[ctask]);
                 if (++ctask >= Tasks.Length) ctask = 0;
             }
         }
@@ -267,15 +268,21 @@ namespace TaskRoute
         /// </summary>
         protected void ResetAnts()
         {
+            Double bestP = BestProfit - BestCost;
+
             Int32 ctask = 0;
             for (int i = 0; i < ants.Length; i++)
             {
                 // TODO Tour Score?
-                if (ants[i].TourCost < BestDistance)
+                Double newP = ants[i].TourProfit - ants[i].TourCost;
+
+                if (newP > bestP)
                 {
                     BestSolution = ants[i].Path.ToList(); // Make a copy!
-                    BestDistance = ants[i].TourCost;
-                    BestValue = ants[i].TourProfit;
+                    BestCost = ants[i].TourCost;
+                    BestProfit = ants[i].TourProfit;
+
+                    Delta = newP - bestP;
                 }
 
                 // TODO Initial Ant Distribution (??)
@@ -287,8 +294,12 @@ namespace TaskRoute
 
                 ants[i].VisitFlags[ctask] = true;
                 ants[i].Path.Add(Tasks[ctask]);
+                ants[i].TourProfit += Profit(Tasks[ctask]);
                 if (++ctask >= Tasks.Length) ctask = 0;
             }
+
+            if (BestProfit - BestCost == bestP)
+                Delta = 0;
         }
 
         /// <summary>

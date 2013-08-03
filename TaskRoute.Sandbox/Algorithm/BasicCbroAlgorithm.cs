@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TaskRoute.Sandbox.Algorithm
 {
@@ -7,16 +8,20 @@ namespace TaskRoute.Sandbox.Algorithm
         public BasicCbroAlgorithm(IEnumerable<DataPoint> tasks, int antCount)
             : base(tasks, antCount)
         {
+            foreach (var t in Tasks)
+                t.Data.Id = t.Id;
         }
 
         public void Run()
         {
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 4000; i++)
             {
                 if (SimulateAnts() == 0)
                 {
                     UpdatePheromone();
                     ResetAnts();
+
+                    //if (Delta < 0.1) break;
                 }
             }
         }

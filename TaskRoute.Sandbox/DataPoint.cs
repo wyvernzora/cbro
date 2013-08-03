@@ -7,6 +7,9 @@ namespace TaskRoute.Sandbox
 {
     public class DataPoint
     {
+        // For debugging only!
+        internal Int32 Id { get; set; }
+
         public Location Location { get; set; }
 
         public Double Profit { get; set; }
